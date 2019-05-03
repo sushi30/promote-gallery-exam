@@ -11,26 +11,36 @@ class Gallery extends React.Component {
 
   constructor(props) {
     super(props);
+    this.cloneHandle = this.cloneHandle.bind(this);
     this.state = {
-      images: [],
+      images      : [],
       galleryWidth: this.getGalleryWidth()
     };
   }
 
-  getGalleryWidth(){
+  getGalleryWidth() {
     try {
       return document.body.clientWidth;
     } catch (e) {
       return 1000;
     }
   }
+
+  cloneHandle(image) {
+    this.setState(currentState => {
+      return {
+        images: currentState.images.concat([image])
+      }
+    })
+  }
+
   getImages(tag) {
     const getImagesUrl = `services/rest/?method=flickr.photos.search&api_key=522c1f9009ca3609bcbaf08545f067ad&tags=${tag}&tag_mode=any&per_page=100&format=json&safe_search=1&nojsoncallback=1`;
     const baseUrl = 'https://api.flickr.com/';
     axios({
-      url: getImagesUrl,
+      url    : getImagesUrl,
       baseURL: baseUrl,
-      method: 'GET'
+      method : 'GET'
     })
       .then(res => res.data)
       .then(res => {
@@ -60,7 +70,10 @@ class Gallery extends React.Component {
     return (
       <div className="gallery-root">
         {this.state.images.map(dto => {
-          return <Image key={'image-' + dto.id} dto={dto} galleryWidth={this.state.galleryWidth}/>;
+          return <Image key={'image-' + dto.id + (Math.round(Math.random() * 10000))} dto={dto} galleryWidth={this.state.galleryWidth}
+                        onClone={() => {
+                          this.cloneHandle(dto)
+                        }}/>;
         })}
       </div>
     );

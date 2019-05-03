@@ -46,7 +46,7 @@ class Image extends React.Component {
         }}
         >
         <div>
-          <FontAwesome className="image-icon" name="clone" title="clone"/>
+          <FontAwesome className="image-icon" name="clone" title="clone" onClick={this.props.onClone}/>
           <FontAwesome className="image-icon" name="filter" title="filter"/>
           <FontAwesome className="image-icon" name="expand" title="expand"/>
         </div>
