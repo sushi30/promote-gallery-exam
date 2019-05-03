@@ -1,46 +1,46 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import react from 'react';
+import proptypes from 'prop-types';
 import axios from 'axios';
-import Image from '../Image';
-import './Gallery.scss';
+import image from '../image';
+import './gallery.scss';
 
-class Gallery extends React.Component {
-  static propTypes = {
-    tag: PropTypes.string
+class gallery extends react.component {
+  static proptypes = {
+    tag: proptypes.string
   };
 
   constructor(props) {
     super(props);
-    this.cloneHandle = this.cloneHandle.bind(this);
+    this.clonehandle = this.clonehandle.bind(this);
     this.state = {
       images      : [],
-      galleryWidth: this.getGalleryWidth()
+      gallerywidth: this.getgallerywidth()
     };
   }
 
-  getGalleryWidth() {
+  getgallerywidth() {
     try {
-      return document.body.clientWidth;
+      return document.body.clientwidth;
     } catch (e) {
       return 1000;
     }
   }
 
-  cloneHandle(image) {
-    this.setState(currentState => {
+  clonehandle(image) {
+    this.setstate(currentstate => {
       return {
-        images: currentState.images.concat([image])
+        images: currentstate.images.concat([image])
       }
     })
   }
 
-  getImages(tag) {
-    const getImagesUrl = `services/rest/?method=flickr.photos.search&api_key=522c1f9009ca3609bcbaf08545f067ad&tags=${tag}&tag_mode=any&per_page=100&format=json&safe_search=1&nojsoncallback=1`;
-    const baseUrl = 'https://api.flickr.com/';
+  getimages(tag) {
+    const getimagesurl = `services/rest/?method=flickr.photos.search&api_key=522c1f9009ca3609bcbaf08545f067ad&tags=${tag}&tag_mode=any&per_page=100&format=json&safe_search=1&nojsoncallback=1`;
+    const baseurl = 'https://api.flickr.com/';
     axios({
-      url    : getImagesUrl,
-      baseURL: baseUrl,
-      method : 'GET'
+      url    : getimagesurl,
+      baseurl: baseurl,
+      method : 'get'
     })
       .then(res => res.data)
       .then(res => {
@@ -50,29 +50,29 @@ class Gallery extends React.Component {
           res.photos.photo &&
           res.photos.photo.length > 0
         ) {
-          this.setState({images: res.photos.photo});
+          this.setstate({images: res.photos.photo});
         }
       });
   }
 
-  componentDidMount() {
-    this.getImages(this.props.tag);
-    this.setState({
-      galleryWidth: document.body.clientWidth
+  componentdidmount() {
+    this.getimages(this.props.tag);
+    this.setstate({
+      gallerywidth: document.body.clientwidth
     });
   }
 
-  componentWillReceiveProps(props) {
-    this.getImages(props.tag);
+  componentwillreceiveprops(props) {
+    this.getimages(props.tag);
   }
 
   render() {
     return (
-      <div className="gallery-root">
+      <div classname="gallery-root">
         {this.state.images.map(dto => {
-          return <Image key={'image-' + dto.id + (Math.round(Math.random() * 10000))} dto={dto} galleryWidth={this.state.galleryWidth}
-                        onClone={() => {
-                          this.cloneHandle(dto)
+          return <image key={'image-' + dto.id + (math.round(math.random() * 10000))} dto={dto} gallerywidth={this.state.gallerywidth}
+                        onclone={() => {
+                          this.clonehandle(dto)
                         }}/>;
         })}
       </div>
@@ -80,4 +80,4 @@ class Gallery extends React.Component {
   }
 }
 
-export default Gallery;
+export default gallery;
